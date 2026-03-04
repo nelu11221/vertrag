@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
 import useScrollAnimation from '../hooks/useScrollAnimation';
@@ -169,7 +169,7 @@ export default function Home() {
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.025, backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
 
         {/* LEFT */}
-        <div style={{ position: 'absolute', left: '8%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.3s both' }}>
+        <div style={{ position: 'absolute', left: '8s%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.3s both' }}>
         <div style={{ position: 'absolute', top: 0, left: 20 }}>
             <MockupCard icon={Icons.bag} label="Pungi Vid Netede" sub="Carne & produse proaspete" tag="Top vânzări" animDelay={0} style={{ transform: 'rotate(-6deg)' }} />
         </div>
