@@ -7,7 +7,6 @@ import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Produse from './pages/Produse';
 import Industrii from './pages/Industrii';
-import Aplicatii from './pages/Aplicatii';
 import Despre from './pages/Despre';
 
 function App() {
@@ -22,8 +21,6 @@ function App() {
           <Route path="/produse/:slug" element={<Produse />} />
           <Route path="/industrii" element={<Industrii />} />
           <Route path="/industrii/:slug" element={<Industrii />} />
-          <Route path="/aplicatii" element={<Aplicatii />} />
-          <Route path="/aplicatii/:slug" element={<Aplicatii />} />
           <Route path="/despre" element={<Despre />} />
         </Routes>
       </main>

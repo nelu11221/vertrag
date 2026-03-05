@@ -5,7 +5,6 @@ import './Footer.css';
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="footer-top-line" />
       <div className="container">
         <div className="footer-grid">
 
@@ -42,18 +41,6 @@ export default function Footer() {
               <li><Link to="/industrii/panificatie">Panificație</Link></li>
               <li><Link to="/industrii/horeca">HoReCa</Link></li>
               <li><Link to="/industrii/non-food">Non-Food</Link></li>
-            </ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>Aplicații</h4>
-            <ul>
-              <li><Link to="/aplicatii/vacuum">Vacuum</Link></li>
-              <li><Link to="/aplicatii/flow-pack">Flow Pack</Link></li>
-              <li><Link to="/aplicatii/atm">Atmosferă Protectoare</Link></li>
-              <li><Link to="/aplicatii/skin">Skin</Link></li>
-              <li><Link to="/aplicatii/stretch">Stretch</Link></li>
-              <li><Link to="/aplicatii/termocontractie">Termocontracție</Link></li>
             </ul>
           </div>
 

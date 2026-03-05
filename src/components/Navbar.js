@@ -21,15 +21,6 @@ const INDUSTRII = [
   { label: 'Non-Food & Auto', sub: 'Industrie & automotive', slug: 'non-food' },
 ];
 
-const APLICATII = [
-  { label: 'Vacuum', sub: 'Eliminarea aerului din ambalaj', slug: 'vacuum' },
-  { label: 'Flow Pack', sub: 'Ambalare continuă în folie', slug: 'flow-pack' },
-  { label: 'Atmosferă Protectoare', sub: 'Gaze protective pentru prospețime', slug: 'atm' },
-  { label: 'Skin', sub: 'Film mulat pe produs, look premium', slug: 'skin' },
-  { label: 'Stretch', sub: 'Forme neregulate, aplicare simplă', slug: 'stretch' },
-  { label: 'Termocontracție', sub: 'Folie contractată prin căldură', slug: 'termocontractie' },
-];
-
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState(null);
@@ -61,9 +52,9 @@ export default function Navbar() {
       <div className="container">
         <div className="navbar-inner">
 
-        <Link to="/" className="navbar-logo">
+          <Link to="/" className="navbar-logo">
             <img src="/images/logo.svg" alt="Vertrag Plus" style={{ height: 36 }} />
-        </Link>
+          </Link>
 
           <ul className="navbar-nav">
             <li className="nav-item">
@@ -77,12 +68,6 @@ export default function Navbar() {
                 Industrii <span className="nav-arrow">▾</span>
               </span>
               <Dropdown items={INDUSTRII} link="/industrii" label="Toate industriile" />
-            </li>
-            <li className="nav-item">
-              <span className={`nav-link ${isActive('/aplicatii') ? 'active' : ''}`}>
-                Aplicații <span className="nav-arrow">▾</span>
-              </span>
-              <Dropdown items={APLICATII} link="/aplicatii" label="Toate aplicațiile" narrow />
             </li>
             <li className="nav-item">
               <Link to="/despre" className={`nav-link ${isActive('/despre') ? 'active' : ''}`}>
@@ -110,7 +95,6 @@ export default function Navbar() {
           {[
             { key: 'produse', label: 'Produse', items: PRODUSE, link: '/produse' },
             { key: 'industrii', label: 'Industrii', items: INDUSTRII, link: '/industrii' },
-            { key: 'aplicatii', label: 'Aplicații', items: APLICATII, link: '/aplicatii' },
           ].map(({ key, label, items, link }) => (
             <div key={key}>
               <div className="mobile-nav-link" onClick={() => toggle(key)}>
