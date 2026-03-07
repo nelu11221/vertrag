@@ -50,7 +50,7 @@ function Modal({ item, onClose, ti }) {
               </div>
             ))}
           </div>
-          <div className="modal-btns" style={{ display: 'flex', gap: 10 }}>
+          <div className="modal-btns btn-row" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <Link to="/despre#contact" onClick={onClose} className="btn btn-red" style={{ flex: 1, justifyContent: 'center', borderRadius: 99 }}>{ti.requestBtn}</Link>
             <button onClick={onClose} className="btn btn-outline" style={{ borderRadius: 99, padding: '13px 24px' }}>{ti.closeBtn}</button>
           </div>
@@ -290,13 +290,13 @@ export default function Industrii() {
               ))}
             </div>
             <Reveal style={{ marginTop: 48 }}>
-              <div style={{ background: 'linear-gradient(135deg, #0f1019, #0c0d16)', border: '1px solid rgba(231,76,60,0.2)', borderRadius: 20, padding: '40px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
+              <div className="cta-banner" style={{ background: 'linear-gradient(135deg, #0f1019, #0c0d16)', border: '1px solid rgba(231,76,60,0.2)', borderRadius: 20, padding: '40px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(231,76,60,0.5), transparent)' }} />
                 <div>
                   <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: '1.6rem', fontWeight: 400, color: '#fff', marginBottom: 8 }}>{ti.noSolution}</h3>
                   <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.88rem', lineHeight: 1.7 }}>{ti.noSolutionDesc}</p>
                 </div>
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="cta-banner-btns btn-row" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   <Link to="/despre#contact" className="btn btn-red" style={{ borderRadius: 99 }}>{ti.ctaBtn1}</Link>
                   <Link to="/industrii" className="btn btn-outline" style={{ borderRadius: 99 }}>{ti.allBtn}</Link>
                 </div>

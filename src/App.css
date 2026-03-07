@@ -495,3 +495,41 @@ input, textarea, button { font-family: inherit; }
 .scroll-stagger > *:nth-child(6) { transition-delay: 0.40s; }
 .scroll-stagger > *:nth-child(7) { transition-delay: 0.48s; }
 .scroll-stagger > *:nth-child(8) { transition-delay: 0.56s; }
+/* ── Button row fixes on mobile ── */
+@media (max-width: 640px) {
+  /* Any flex row of buttons — stack them */
+  .btn-row {
+    flex-direction: column !important;
+    width: 100%;
+  }
+  .btn-row .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* CTA banner inside Produse / Industrii pages */
+  .cta-banner {
+    padding: 32px 20px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: left;
+  }
+  .cta-banner-btns {
+    flex-direction: column !important;
+    width: 100%;
+  }
+  .cta-banner-btns .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Page header button row */
+  .page-header-btn-row {
+    flex-direction: column !important;
+    width: 100%;
+  }
+  .page-header-btn-row .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
