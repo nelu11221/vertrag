@@ -41,7 +41,6 @@ export default function Footer() {
               <li><Link to="/industrii/congelate">Congelate</Link></li>
               <li><Link to="/industrii/panificatie">Panificație</Link></li>
               <li><Link to="/industrii/horeca">HoReCa</Link></li>
-              <li><Link to="/industrii/non-food">Non-Food</Link></li>
             </ul>
           </div>
 

@@ -20,7 +20,6 @@ const INDUSTRII_SLUGS = [
   { label: 'Congelate',               sub: 'Rezistență la temperaturi joase',             slug: 'congelate'    },
   { label: 'Panificație & Cofetărie', sub: 'Flow-pack & folii termosudabile',             slug: 'panificatie'  },
   { label: 'HoReCa & Catering',       sub: 'Porționare și prezentare premium',            slug: 'horeca'       },
-  { label: 'Non-Food & Auto',         sub: 'Industrie & automotive',                      slug: 'non-food'     },
 ];
 
 export default function Navbar() {

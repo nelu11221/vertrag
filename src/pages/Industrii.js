@@ -194,26 +194,6 @@ const ALL = [
       { img: '/images/ind1_29.jpg', title: 'Rumeguș pentru afumare', desc: 'Esența lemnului pur, pentru o aromă tradițională inconfundabilă.' },
     ],
   },
-  {
-    img: '/images/ind8.jpg', title: 'Non-Food', slug: 'non-food', tag: null, filter: 'Industrial',
-    desc: 'Ambalaje pentru industria auto, componente electronice și alte produse industriale.',
-    subcategorii: [
-      { img: '/images/ind8.jpg', title: 'Industrie Auto', desc: 'Ambalaje antistatice și de protecție pentru piese auto și componente metalice.' },
-      { img: '/images/ind8.jpg', title: 'Componente Electronice', desc: 'Pungi antistatice ESD pentru protecția componentelor electronice sensibile.' },
-      { img: '/images/ind8.jpg', title: 'Produse Chimice', desc: 'Ambalaje rezistente chimic pentru produse de curățenie și substanțe industriale.' },
-      { img: '/images/ind8.jpg', title: 'Textile & Îmbrăcăminte', desc: 'Pungi transparente și opace pentru ambalarea și transportul produselor textile.' },
-    ],
-  },
-  {
-    img: '/images/ind9.jpg', title: 'Alte Industrii', slug: 'alte-industrii', tag: null, filter: 'Industrial',
-    desc: 'Soluții personalizate pentru industrii specifice. Consultanță și dezvoltare de produse la comandă.',
-    subcategorii: [
-      { img: '/images/ind9.jpg', title: 'Agricultură', desc: 'Folii și saci pentru produse agricole, semințe și îngrășăminte.' },
-      { img: '/images/ind9.jpg', title: 'Farmacie & Medical', desc: 'Ambalaje sterile și conforme cu normele medicale pentru produse farmaceutice.' },
-      { img: '/images/ind9.jpg', title: 'Cosmetice & Îngrijire', desc: 'Ambalaje elegante pentru produse cosmetice și de îngrijire personală.' },
-      { img: '/images/ind9.jpg', title: 'Soluții La Comandă', desc: 'Dezvoltăm ambalaje personalizate pentru orice industrie, după specificațiile clientului.' },
-    ],
-  },
 ];
 
 
