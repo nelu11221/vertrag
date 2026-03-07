@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 import '../App.css';
 import { useLang } from '../context/LanguageContext';
+
+// ─── EmailJS config — replace with your real IDs ────────────────────────────
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+// ────────────────────────────────────────────────────────────────────────────
 
 const MARKETS = [
   { flag: '🇷🇴', name: 'România' },
@@ -17,6 +24,46 @@ const CERTS = ['ISO 9001:2015', 'ISO 22000', 'BRC Packaging', 'FSSC 22000'];
 export default function Despre() {
   const { t } = useLang();
   const td = t.despre;
+
+  const [formData, setFormData] = useState({ name: '', email: '', company: '', message: '' });
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async () => {
+    const { name, email, message } = formData;
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
+
+    setStatus('sending');
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name:    formData.name,
+          from_email:   formData.email,
+          from_company: formData.company,
+          message:      formData.message,
+          reply_to:     formData.email,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      setStatus('success');
+      setFormData({ name: '', email: '', company: '', message: '' });
+      setTimeout(() => setStatus('idle'), 5000);
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 4000);
+    }
+  };
 
   const STATS = [
     { value: '20+', label: td.statYears },
@@ -143,14 +190,64 @@ export default function Despre() {
                 </div>
               ))}
             </div>
+
             <div style={{ background: 'linear-gradient(145deg, #131313, #0f0f0f)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '36px' }}>
               <h3 style={{ color: '#fff', fontWeight: 700, marginBottom: 24, fontSize: '1.1rem' }}>{td.formTitle}</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <input type="text" placeholder={td.formName} className="input" />
-                <input type="email" placeholder={td.formEmail} className="input" />
-                <input type="text" placeholder={td.formCompany} className="input" />
-                <textarea placeholder={td.formMessage} rows={4} className="input" style={{ resize: 'vertical' }} />
-                <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>{td.formBtn}</button>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder={td.formName}
+                  className="input"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder={td.formEmail}
+                  className="input"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  name="company"
+                  placeholder={td.formCompany}
+                  className="input"
+                  value={formData.company}
+                  onChange={handleChange}
+                />
+                <textarea
+                  name="message"
+                  placeholder={td.formMessage}
+                  rows={4}
+                  className="input"
+                  style={{ resize: 'vertical' }}
+                  value={formData.message}
+                  onChange={handleChange}
+                />
+
+                <button
+                  className="btn btn-primary"
+                  style={{ width: '100%', justifyContent: 'center', opacity: status === 'sending' ? 0.7 : 1, cursor: status === 'sending' ? 'not-allowed' : 'pointer' }}
+                  onClick={handleSubmit}
+                  disabled={status === 'sending'}
+                >
+                  {status === 'sending' ? '⏳ Se trimite...' : td.formBtn}
+                </button>
+
+                {status === 'success' && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', background: 'rgba(46,213,115,0.08)', border: '1px solid rgba(46,213,115,0.25)', borderRadius: 10, color: '#2ed573', fontSize: '0.875rem', fontWeight: 500 }}>
+                    ✅ {td.formSuccess || 'Mesaj trimis cu succes! Vă vom contacta în curând.'}
+                  </div>
+                )}
+
+                {status === 'error' && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', background: 'rgba(231,76,60,0.08)', border: '1px solid rgba(231,76,60,0.25)', borderRadius: 10, color: '#e74c3c', fontSize: '0.875rem', fontWeight: 500 }}>
+                    ❌ {td.formError || 'Eroare la trimitere. Completați câmpurile obligatorii și încercați din nou.'}
+                  </div>
+                )}
               </div>
             </div>
           </div>
