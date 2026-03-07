@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
+import { useLang } from '../context/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
-const PRODUSE = [
+const PRODUSE_SLUGS = [
   { label: 'Pungi Vid', sub: 'Ambalare în vid, conservare optimă', slug: 'pungi-vid' },
   { label: 'Filme & Folii Alimentare', sub: 'Protecție și conservare alimentară', slug: 'filme-folii' },
   { label: 'Caserole, Tăvițe, Boluri', sub: 'Ambalaje rigide pentru alimente', slug: 'caserole' },
@@ -12,7 +14,7 @@ const PRODUSE = [
   { label: 'Echipamente de Ambalare', sub: 'Compatibile cu toată gama noastră', slug: 'echipamente' },
 ];
 
-const INDUSTRII = [
+const INDUSTRII_SLUGS = [
   { label: 'Carne', sub: 'Vacuum & termocontractibil', slug: 'carne' },
   { label: 'Brânzeturi', sub: 'Maturare & ambalare', slug: 'branzeturi' },
   { label: 'Congelate', sub: 'Rezistență la temperaturi joase', slug: 'congelate' },
@@ -25,13 +27,14 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const location = useLocation();
+  const { t } = useLang();
 
   const isActive = (path) => location.pathname.startsWith(path);
   const toggle = (key) => setMobileExpanded(mobileExpanded === key ? null : key);
 
-  const Dropdown = ({ items, link, label, narrow }) => (
-    <div className={`dropdown${narrow ? ' narrow' : ''}`}>
-      <div className={`dropdown-grid${narrow ? ' single' : ''}`}>
+  const Dropdown = ({ items, link, label }) => (
+    <div className="dropdown">
+      <div className="dropdown-grid">
         {items.map(item => (
           <Link key={item.slug} to={`${link}/${item.slug}`} className="dropdown-item" onClick={() => setMenuOpen(false)}>
             <span className="dd-label">{item.label}</span>
@@ -59,26 +62,27 @@ export default function Navbar() {
           <ul className="navbar-nav">
             <li className="nav-item">
               <span className={`nav-link ${isActive('/produse') ? 'active' : ''}`}>
-                Produse <span className="nav-arrow">▾</span>
+                {t.nav.produse} <span className="nav-arrow">▾</span>
               </span>
-              <Dropdown items={PRODUSE} link="/produse" label="Toate produsele" />
+              <Dropdown items={PRODUSE_SLUGS} link="/produse" label={t.nav.toateProdusele} />
             </li>
             <li className="nav-item">
               <span className={`nav-link ${isActive('/industrii') ? 'active' : ''}`}>
-                Industrii <span className="nav-arrow">▾</span>
+                {t.nav.industrii} <span className="nav-arrow">▾</span>
               </span>
-              <Dropdown items={INDUSTRII} link="/industrii" label="Toate industriile" />
+              <Dropdown items={INDUSTRII_SLUGS} link="/industrii" label={t.nav.toateIndustriile} />
             </li>
             <li className="nav-item">
               <Link to="/despre" className={`nav-link ${isActive('/despre') ? 'active' : ''}`}>
-                Despre noi
+                {t.nav.despre}
               </Link>
             </li>
           </ul>
 
           <div className="navbar-right">
+            <LanguageSwitcher />
             <Link to="/despre#contact" className="nav-cta">
-              Contact Us
+              {t.nav.contact}
               <span className="nav-cta-arrow">›</span>
             </Link>
           </div>
@@ -93,8 +97,8 @@ export default function Navbar() {
       <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
         <div className="mobile-nav-group">
           {[
-            { key: 'produse', label: 'Produse', items: PRODUSE, link: '/produse' },
-            { key: 'industrii', label: 'Industrii', items: INDUSTRII, link: '/industrii' },
+            { key: 'produse', label: t.nav.produse, items: PRODUSE_SLUGS, link: '/produse' },
+            { key: 'industrii', label: t.nav.industrii, items: INDUSTRII_SLUGS, link: '/industrii' },
           ].map(({ key, label, items, link }) => (
             <div key={key}>
               <div className="mobile-nav-link" onClick={() => toggle(key)}>
@@ -112,10 +116,13 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <Link to="/despre" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Despre noi</Link>
+          <Link to="/despre" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>{t.nav.despre}</Link>
+        </div>
+        <div style={{ padding: '4px 12px 8px' }}>
+          <LanguageSwitcher />
         </div>
         <Link to="/despre#contact" className="mobile-cta" onClick={() => setMenuOpen(false)}>
-          Contact Us <span style={{ color: '#e74c3c' }}>›</span>
+          {t.nav.contact} <span style={{ color: '#e74c3c' }}>›</span>
         </Link>
       </div>
     </nav>

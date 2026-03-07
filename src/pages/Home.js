@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
 import useScrollAnimation from '../hooks/useScrollAnimation';
+import { useLang } from '../context/LanguageContext';
 
 /* ── SVG Icons ── */
 const Icons = {
@@ -22,68 +23,86 @@ const Icons = {
   car: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h11l4 4 2 2v4a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>,
 };
 
-const PRODUSE = [
-  { img: '/images/img1.jpg', icon: Icons.bag, title: 'Pungi Vid', desc: 'Conservă produsele eliminând aerul și menținând un mediu sigilat.', slug: 'pungi-vid' },
-  { img: '/images/img2.jpg', icon: Icons.film, title: 'Filme & Folii Alimentare', desc: 'Protejează și conservă, asigurând igienă și siguranță maximă.', slug: 'filme-folii' },
-  { img: '/images/img3.jpg', icon: Icons.box, title: 'Caserole, Tăvițe, Boluri', desc: 'Eficiente, sigure și atractive pentru orice tip de aliment.', slug: 'caserole' },
-  { img: '/images/img4.jpg', icon: Icons.layers, title: 'Membrane Poliamidice', desc: 'Eficiente, durabile, folosite în varii procese industriale.', slug: 'membrane' },
-  { img: '/images/img5.jpg', icon: Icons.paper, title: 'Hârtie & Absorbante', desc: 'Mențin alimentele proaspete, absorb lichide și grăsimi.', slug: 'hartie' },
-  { img: '/images/img6.jpg', icon: Icons.smoke, title: 'Rumeguș pentru Afumare', desc: 'Pentru aromă intensă și gust autentic de fum natural.', slug: 'rumegus' },
-  { img: '/images/img7.jpg', icon: Icons.settings, title: 'Echipamente de Ambalare', desc: 'Performante, 100% compatibile cu gama noastră de produse.', slug: 'echipamente' },
-];
+const PRODUSE_DATA = {
+  ro: [
+    { img: '/images/img1.jpg', icon: Icons.bag,      title: 'Pungi Vid',                  desc: 'Conservă produsele eliminând aerul și menținând un mediu sigilat.',              slug: 'pungi-vid' },
+    { img: '/images/img2.jpg', icon: Icons.film,     title: 'Filme & Folii Alimentare',    desc: 'Protejează și conservă, asigurând igienă și siguranță maximă.',                 slug: 'filme-folii' },
+    { img: '/images/img3.jpg', icon: Icons.box,      title: 'Caserole, Tăvițe, Boluri',   desc: 'Eficiente, sigure și atractive pentru orice tip de aliment.',                   slug: 'caserole' },
+    { img: '/images/img4.jpg', icon: Icons.layers,   title: 'Membrane Poliamidice',        desc: 'Eficiente, durabile, folosite în varii procese industriale.',                   slug: 'membrane' },
+    { img: '/images/img5.jpg', icon: Icons.paper,    title: 'Hârtie & Absorbante',         desc: 'Mențin alimentele proaspete, absorb lichide și grăsimi.',                       slug: 'hartie' },
+    { img: '/images/img6.jpg', icon: Icons.smoke,    title: 'Rumeguș pentru Afumare',      desc: 'Pentru aromă intensă și gust autentic de fum natural.',                         slug: 'rumegus' },
+    { img: '/images/img7.jpg', icon: Icons.settings, title: 'Echipamente de Ambalare',     desc: 'Performante, 100% compatibile cu gama noastră de produse.',                    slug: 'echipamente' },
+  ],
+  en: [
+    { img: '/images/img1.jpg', icon: Icons.bag,      title: 'Vacuum Bags',                desc: 'Preserve products by removing air and maintaining a sealed environment.',        slug: 'pungi-vid' },
+    { img: '/images/img2.jpg', icon: Icons.film,     title: 'Food Films & Foils',          desc: 'Protect and preserve, ensuring maximum hygiene and safety.',                    slug: 'filme-folii' },
+    { img: '/images/img3.jpg', icon: Icons.box,      title: 'Trays, Containers, Bowls',   desc: 'Efficient, safe and attractive for any type of food.',                          slug: 'caserole' },
+    { img: '/images/img4.jpg', icon: Icons.layers,   title: 'Polyamide Membranes',         desc: 'Efficient, durable, used in various industrial processes.',                     slug: 'membrane' },
+    { img: '/images/img5.jpg', icon: Icons.paper,    title: 'Paper & Absorbents',          desc: 'Keep food fresh, absorb liquids and fats.',                                     slug: 'hartie' },
+    { img: '/images/img6.jpg', icon: Icons.smoke,    title: 'Smoking Sawdust',             desc: 'For intense aroma and authentic natural smoke flavor.',                         slug: 'rumegus' },
+    { img: '/images/img7.jpg', icon: Icons.settings, title: 'Packaging Equipment',         desc: 'High-performance, 100% compatible with our entire product range.',              slug: 'echipamente' },
+  ],
+  ru: [
+    { img: '/images/img1.jpg', icon: Icons.bag,      title: 'Вакуумные пакеты',            desc: 'Сохраняют продукты, удаляя воздух и поддерживая герметичную среду.',           slug: 'pungi-vid' },
+    { img: '/images/img2.jpg', icon: Icons.film,     title: 'Пищевые пленки и фольга',     desc: 'Защищают и сохраняют, обеспечивая максимальную гигиену и безопасность.',       slug: 'filme-folii' },
+    { img: '/images/img3.jpg', icon: Icons.box,      title: 'Лотки, контейнеры, миски',   desc: 'Эффективные, безопасные и привлекательные для любого типа продуктов.',         slug: 'caserole' },
+    { img: '/images/img4.jpg', icon: Icons.layers,   title: 'Полиамидные мембраны',        desc: 'Эффективные, долговечные, применяемые в различных промышленных процессах.',    slug: 'membrane' },
+    { img: '/images/img5.jpg', icon: Icons.paper,    title: 'Бумага и абсорбенты',         desc: 'Сохраняют свежесть продуктов, впитывают жидкости и жиры.',                     slug: 'hartie' },
+    { img: '/images/img6.jpg', icon: Icons.smoke,    title: 'Щепа для копчения',           desc: 'Для интенсивного аромата и подлинного вкуса натурального дыма.',               slug: 'rumegus' },
+    { img: '/images/img7.jpg', icon: Icons.settings, title: 'Упаковочное оборудование',    desc: 'Высокопроизводительное, 100% совместимое с нашим ассортиментом.',              slug: 'echipamente' },
+  ],
+};
 
-const FEATURED = [
-  { img: '/images/section2img1.jpg', title: 'Pungi vid netede pentru carne', slug: 'pungi-vid' },
-  { img: '/images/section2img2.jpg', title: 'Hârtie cerată / Kraft', slug: 'hartie' },
-  { img: '/images/section2img3.jpg', title: 'Pungi vid termocontractibile', slug: 'pungi-vid' },
-  { img: '/images/section2img4.jpg', title: 'Filme flexibile', slug: 'filme-folii' },
-  { img: '/images/section2img5.jpg', title: 'Filme Flow-Pack laminate', slug: 'filme-folii' },
-  { img: '/images/section2img6.jpg', title: 'Pungi vid gofrate', slug: 'pungi-vid' },
-  { img: '/images/section2img7.jpg', title: 'Pungi vid tratamente termice', slug: 'pungi-vid' },
-  { img: '/images/section2img8.jpg', title: 'Filme rigide', slug: 'filme-folii' },
-];
-
-const STATS = [
-  { value: '20+', label: 'Ani de experiență' },
-  { value: '2', label: 'Fabrici proprii' },
-  { value: '20+', label: 'Grupe de produse' },
-  { value: '6', label: 'Piețe europene' },
-];
+const FEATURED_DATA = {
+  ro: [
+    { img: '/images/section2img1.jpg', title: 'Pungi vid netede pentru carne',    slug: 'pungi-vid' },
+    { img: '/images/section2img2.jpg', title: 'Hârtie cerată / Kraft',            slug: 'hartie' },
+    { img: '/images/section2img3.jpg', title: 'Pungi vid termocontractibile',     slug: 'pungi-vid' },
+    { img: '/images/section2img4.jpg', title: 'Filme flexibile',                  slug: 'filme-folii' },
+    { img: '/images/section2img5.jpg', title: 'Filme Flow-Pack laminate',         slug: 'filme-folii' },
+    { img: '/images/section2img6.jpg', title: 'Pungi vid gofrate',                slug: 'pungi-vid' },
+    { img: '/images/section2img7.jpg', title: 'Pungi vid tratamente termice',     slug: 'pungi-vid' },
+    { img: '/images/section2img8.jpg', title: 'Filme rigide',                     slug: 'filme-folii' },
+  ],
+  en: [
+    { img: '/images/section2img1.jpg', title: 'Smooth vacuum bags for meat',      slug: 'pungi-vid' },
+    { img: '/images/section2img2.jpg', title: 'Waxed / Kraft paper',              slug: 'hartie' },
+    { img: '/images/section2img3.jpg', title: 'Shrink vacuum bags',               slug: 'pungi-vid' },
+    { img: '/images/section2img4.jpg', title: 'Flexible films',                   slug: 'filme-folii' },
+    { img: '/images/section2img5.jpg', title: 'Laminated Flow-Pack films',        slug: 'filme-folii' },
+    { img: '/images/section2img6.jpg', title: 'Embossed vacuum bags',             slug: 'pungi-vid' },
+    { img: '/images/section2img7.jpg', title: 'Heat treatment vacuum bags',       slug: 'pungi-vid' },
+    { img: '/images/section2img8.jpg', title: 'Rigid films',                      slug: 'filme-folii' },
+  ],
+  ru: [
+    { img: '/images/section2img1.jpg', title: 'Гладкие вакуумные пакеты для мяса',         slug: 'pungi-vid' },
+    { img: '/images/section2img2.jpg', title: 'Вощёная / крафт-бумага',                    slug: 'hartie' },
+    { img: '/images/section2img3.jpg', title: 'Термоусадочные вакуумные пакеты',           slug: 'pungi-vid' },
+    { img: '/images/section2img4.jpg', title: 'Гибкие пленки',                             slug: 'filme-folii' },
+    { img: '/images/section2img5.jpg', title: 'Ламинированные пленки Flow-Pack',           slug: 'filme-folii' },
+    { img: '/images/section2img6.jpg', title: 'Рифлёные вакуумные пакеты',                 slug: 'pungi-vid' },
+    { img: '/images/section2img7.jpg', title: 'Вакуумные пакеты для термообработки',       slug: 'pungi-vid' },
+    { img: '/images/section2img8.jpg', title: 'Жёсткие пленки',                            slug: 'filme-folii' },
+  ],
+};
 
 const MARKETS = [
-  { flag: '🇷🇴', name: 'România' },
-  { flag: '🇬🇷', name: 'Grecia' },
-  { flag: '🇩🇪', name: 'Germania' },
-  { flag: '🇪🇸', name: 'Spania' },
-  { flag: '🇫🇷', name: 'Franța' },
-  { flag: '🇵🇱', name: 'Polonia' },
+  { flag: '🇷🇴', name: { ro: 'România',  en: 'Romania',  ru: 'Румыния'  } },
+  { flag: '🇬🇷', name: { ro: 'Grecia',   en: 'Greece',   ru: 'Греция'   } },
+  { flag: '🇩🇪', name: { ro: 'Germania', en: 'Germany',  ru: 'Германия' } },
+  { flag: '🇪🇸', name: { ro: 'Spania',   en: 'Spain',    ru: 'Испания'  } },
+  { flag: '🇫🇷', name: { ro: 'Franța',   en: 'France',   ru: 'Франция'  } },
+  { flag: '🇵🇱', name: { ro: 'Polonia',  en: 'Poland',   ru: 'Польша'   } },
 ];
 
-/* ── Animated wrapper using IntersectionObserver ── */
 function Reveal({ children, className = 'scroll-hidden', style = {}, delay = 0 }) {
   const ref = useScrollAnimation();
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{ ...style, transitionDelay: `${delay}s` }}
-    >
-      {children}
-    </div>
-  );
+  return <div ref={ref} className={className} style={{ ...style, transitionDelay: `${delay}s` }}>{children}</div>;
 }
 
-/* ── Floating MockupCard ── */
 function MockupCard({ icon, label, sub, tag, style, animDelay = 0 }) {
   return (
-    <div style={{
-      background: 'linear-gradient(145deg, #13141f, #0f1019)',
-      border: '1px solid rgba(255,255,255,0.09)',
-      borderRadius: 18, padding: '20px', width: 210,
-      boxShadow: '0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)',
-      animation: `floatCard 6s ease-in-out ${animDelay}s infinite`,
-      ...style,
-    }}>
+    <div style={{ background: 'linear-gradient(145deg, #13141f, #0f1019)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 18, padding: '20px', width: 210, boxShadow: '0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)', animation: `floatCard 6s ease-in-out ${animDelay}s infinite`, ...style }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
         <div style={{ width: 38, height: 38, background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.2)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e74c3c' }}>{icon}</div>
         {tag && <span style={{ fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 99, background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.22)', color: '#e74c3c' }}>{tag}</span>}
@@ -97,14 +116,7 @@ function MockupCard({ icon, label, sub, tag, style, animDelay = 0 }) {
 
 function StatChip({ value, label, style, animDelay = 0 }) {
   return (
-    <div style={{
-      background: 'linear-gradient(145deg, #13141f, #0f1019)',
-      border: '1px solid rgba(255,255,255,0.08)',
-      borderRadius: 14, padding: '14px 20px',
-      boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
-      animation: `floatCard 6s ease-in-out ${animDelay}s infinite`,
-      ...style,
-    }}>
+    <div style={{ background: 'linear-gradient(145deg, #13141f, #0f1019)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '14px 20px', boxShadow: '0 16px 40px rgba(0,0,0,0.5)', animation: `floatCard 6s ease-in-out ${animDelay}s infinite`, ...style }}>
       <div style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', fontSize: '1.7rem', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #e74c3c, #ff7060)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1, marginBottom: 4 }}>{value}</div>
       <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.28)', whiteSpace: 'nowrap' }}>{label}</div>
     </div>
@@ -113,42 +125,33 @@ function StatChip({ value, label, style, animDelay = 0 }) {
 
 function IndustryTag({ icon, label, style, animDelay = 0 }) {
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: 8,
-      padding: '9px 14px',
-      background: 'linear-gradient(145deg, #13141f, #0f1019)',
-      border: '1px solid rgba(255,255,255,0.08)',
-      borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-      fontSize: '0.78rem', fontWeight: 600,
-      color: 'rgba(255,255,255,0.6)', whiteSpace: 'nowrap',
-      animation: `floatCard 6s ease-in-out ${animDelay}s infinite`,
-      ...style,
-    }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 14px', background: 'linear-gradient(145deg, #13141f, #0f1019)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.4)', fontSize: '0.78rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', whiteSpace: 'nowrap', animation: `floatCard 6s ease-in-out ${animDelay}s infinite`, ...style }}>
       <span style={{ color: '#e74c3c' }}>{icon}</span> {label}
     </div>
   );
 }
 
 export default function Home() {
+  const { lang, t } = useLang();
+  const h = t.home;
+  const PRODUSE = PRODUSE_DATA[lang];
+  const FEATURED = FEATURED_DATA[lang];
+  const STATS = [
+    { value: '20+', label: h.statsYears },
+    { value: '2',   label: h.statsFactories },
+    { value: '20+', label: h.statsGroups },
+    { value: '6',   label: h.statsMarkets },
+  ];
+
   useEffect(() => {
     const id = 'vertrag-keyframes';
     if (document.getElementById(id)) return;
     const style = document.createElement('style');
     style.id = id;
     style.textContent = `
-      @keyframes floatCard {
-        0%   { transform: translateY(0px); }
-        50%  { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
-      }
-      @keyframes fadeSlideUp {
-        from { opacity: 0; transform: translateY(28px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to   { opacity: 1; }
-      }
+      @keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+      @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
       .hero-animate { animation: fadeSlideUp 0.7s cubic-bezier(0.4,0,0.2,1) both; }
       .hero-animate-1 { animation-delay: 0.1s; }
       .hero-animate-2 { animation-delay: 0.22s; }
@@ -161,78 +164,57 @@ export default function Home() {
 
   return (
     <div>
-
-      {/* ════════════ HERO ════════════ */}
+      {/* HERO */}
       <section style={{ position: 'relative', minHeight: '94vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', overflow: 'hidden', padding: '120px 32px 80px' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 30%, rgba(231,76,60,0.1) 0%, rgba(100,40,120,0.06) 35%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(8,9,16,1), transparent)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.025, backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
 
-        {/* LEFT */}
+        {/* LEFT floating cards */}
         <div style={{ position: 'absolute', left: '8%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.3s both' }}>
-        <div style={{ position: 'absolute', top: 0, left: 20 }}>
-            <MockupCard icon={Icons.bag} label="Pungi Vid Netede" sub="Carne & produse proaspete" tag="Top vânzări" animDelay={0} style={{ transform: 'rotate(-6deg)' }} />
-        </div>
-        <div style={{ position: 'absolute', top: 185, left: 60 }}>
-            <StatChip value="2,000+" label="Tipuri de produse" animDelay={1.2} style={{ transform: 'rotate(4deg)' }} />
-        </div>
-        <div style={{ position: 'absolute', top: 330, left: 10 }}>
-            <MockupCard icon={Icons.film} label="Filme Flow-Pack" sub="Panificație & cofetărie" animDelay={0.7} style={{ transform: 'rotate(-2deg)', opacity: 0.88 }} />
-        </div>
-        <div style={{ position: 'absolute', top: 160, left: -10 }}>
-            <IndustryTag icon={Icons.meat} label="Carne" animDelay={0.4} style={{ transform: 'rotate(5deg)' }} />
-        </div>
+          <div style={{ position: 'absolute', top: 0, left: 20 }}><MockupCard icon={Icons.bag} label={h.floatCard1} sub={h.floatCard1sub} tag={h.floatTagTop} animDelay={0} style={{ transform: 'rotate(-6deg)' }} /></div>
+          <div style={{ position: 'absolute', top: 185, left: 60 }}><StatChip value="2,000+" label={h.floatStat} animDelay={1.2} style={{ transform: 'rotate(4deg)' }} /></div>
+          <div style={{ position: 'absolute', top: 330, left: 10 }}><MockupCard icon={Icons.film} label={h.floatCard2} sub={h.floatCard2sub} animDelay={0.7} style={{ transform: 'rotate(-2deg)', opacity: 0.88 }} /></div>
+          <div style={{ position: 'absolute', top: 160, left: -10 }}><IndustryTag icon={Icons.meat} label={h.floatTag1} animDelay={0.4} style={{ transform: 'rotate(5deg)' }} /></div>
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT floating cards */}
         <div style={{ position: 'absolute', right: '8%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.5s both' }}>
-        <div style={{ position: 'absolute', top: 0, right: 0 }}>
-            <MockupCard icon={Icons.globe} label="Export European" sub="6 piețe internaționale" tag="Internațional" animDelay={0.5} style={{ transform: 'rotate(5deg)' }} />
-        </div>
-        <div style={{ position: 'absolute', top: 175, right: 50 }}>
-            <IndustryTag icon={Icons.cheese} label="Brânzeturi" animDelay={0.9} style={{ transform: 'rotate(-4deg)' }} />
-        </div>
-        <div style={{ position: 'absolute', top: 235, right: 0 }}>
-            <MockupCard icon={Icons.box} label="Caserole & Tăvițe" sub="Ambalaje rigide premium" animDelay={1.3} style={{ transform: 'rotate(-5deg)', opacity: 0.88 }} />
-        </div>
-        <div style={{ position: 'absolute', top: 430, right: 70 }}>
-            <IndustryTag icon={Icons.snowflake} label="Congelate" animDelay={0.6} style={{ transform: 'rotate(3deg)' }} />
-        </div>
-        <div style={{ position: 'absolute', top: 490, right: 10 }}>
-            <IndustryTag icon={Icons.bread} label="Panificație" animDelay={1.6} style={{ transform: 'rotate(-6deg)' }} />
-        </div>
+          <div style={{ position: 'absolute', top: 0, right: 0 }}><MockupCard icon={Icons.globe} label={h.floatCard3} sub={h.floatCard3sub} tag={h.floatTagInt} animDelay={0.5} style={{ transform: 'rotate(5deg)' }} /></div>
+          <div style={{ position: 'absolute', top: 175, right: 50 }}><IndustryTag icon={Icons.cheese} label={h.floatTag2} animDelay={0.9} style={{ transform: 'rotate(-4deg)' }} /></div>
+          <div style={{ position: 'absolute', top: 235, right: 0 }}><MockupCard icon={Icons.box} label={h.floatCard4} sub={h.floatCard4sub} animDelay={1.3} style={{ transform: 'rotate(-5deg)', opacity: 0.88 }} /></div>
+          <div style={{ position: 'absolute', top: 430, right: 70 }}><IndustryTag icon={Icons.snowflake} label={h.floatTag3} animDelay={0.6} style={{ transform: 'rotate(3deg)' }} /></div>
+          <div style={{ position: 'absolute', top: 490, right: 10 }}><IndustryTag icon={Icons.bread} label={h.floatTag4} animDelay={1.6} style={{ transform: 'rotate(-6deg)' }} /></div>
         </div>
 
         {/* CENTER */}
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 780 }}>
           <div className="hero-animate hero-animate-1" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 16px', background: 'rgba(231,76,60,0.08)', border: '1px solid rgba(231,76,60,0.22)', borderRadius: 99, marginBottom: 40 }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#e74c3c', boxShadow: '0 0 8px rgba(231,76,60,0.8)', display: 'inline-block' }} />
-            <span style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#e74c3c' }}>Producător local · 20+ ani experiență</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#e74c3c' }}>{h.heroBadge}</span>
           </div>
           <h1 className="hero-animate hero-animate-2" style={{ fontSize: 'clamp(3rem, 8vw, 6.5rem)', lineHeight: 1.02, letterSpacing: '-0.04em', color: '#fff', marginBottom: 32, fontWeight: 400 }}>
-            <span style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic' }}>Ambalaje</span>{' '}
-            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700 }}>care</span><br />
-            <span style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #e74c3c 0%, #ff7060 50%, #c0392b 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>protejează</span>{' '}
-            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700 }}>și conservă.</span>
+            <span style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic' }}>{h.heroTitle1}</span>{' '}
+            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700 }}>{h.heroTitle2}</span><br />
+            <span style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #e74c3c 0%, #ff7060 50%, #c0392b 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{h.heroTitle3}</span>{' '}
+            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700 }}>{h.heroTitle4}</span>
           </h1>
-          <p className="hero-animate hero-animate-3" style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: 'rgba(255,255,255,0.38)', maxWidth: 520, margin: '0 auto 44px', lineHeight: 1.8 }}>
-            Peste 20 de ani de experiență în producția de ambalaje. Două fabrici proprii, mii de tipuri de pungi, filme și ambalaje flexibile pentru sectorul alimentar și industrial.
-          </p>
+          <p className="hero-animate hero-animate-3" style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: 'rgba(255,255,255,0.38)', maxWidth: 520, margin: '0 auto 44px', lineHeight: 1.8 }}>{h.heroDesc}</p>
           <div className="hero-animate hero-animate-4" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 72 }}>
-            <Link to="/produse" className="btn btn-primary" style={{ padding: '14px 32px', fontSize: '0.9rem', borderRadius: 99 }}>Explorați produsele</Link>
-            <Link to="/despre#contact" className="btn btn-outline" style={{ padding: '14px 32px', fontSize: '0.9rem' }}>Contactați-ne</Link>
+            <Link to="/produse" className="btn btn-primary" style={{ padding: '14px 32px', fontSize: '0.9rem', borderRadius: 99 }}>{h.heroBtn1}</Link>
+            <Link to="/despre#contact" className="btn btn-outline" style={{ padding: '14px 32px', fontSize: '0.9rem' }}>{h.heroBtn2}</Link>
           </div>
           <div className="hero-animate hero-animate-5" style={{ display: 'flex', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
             {MARKETS.map((m, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 99, fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>
-                <span>{m.flag}</span> {m.name}
+                <span>{m.flag}</span> {m.name[lang]}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ════════════ STATS ════════════ */}
+      {/* STATS */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', background: '#0a0b14' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
@@ -248,52 +230,47 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ════════════ PRODUCTS ════════════ */}
-        <section className="section">
+      {/* PRODUCTS */}
+      <section className="section">
         <div className="container">
-            <Reveal className="scroll-hidden" style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Gama de produse</div>
-            <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em', marginBottom: 14 }}>
-                Explorați gama noastră de produse
-            </h2>
-            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.28)', maxWidth: 480, margin: '0 auto' }}>
-                Mii de tipuri de pungi, filme și ambalaje flexibile, grupate în ~20 grupe de produse.
-            </p>
-            </Reveal>
-            <div className="card-grid">
+          <Reveal className="scroll-hidden" style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div className="section-eyebrow" style={{ justifyContent: 'center' }}>{h.productsEyebrow}</div>
+            <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em', marginBottom: 14 }}>{h.productsTitle}</h2>
+            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.28)', maxWidth: 480, margin: '0 auto' }}>{h.productsDesc}</p>
+          </Reveal>
+          <div className="card-grid">
             {PRODUSE.map((p, i) => (
-                <Reveal key={i} delay={i * 0.08} className="scroll-hidden">
+              <Reveal key={i} delay={i * 0.08} className="scroll-hidden">
                 <Link to={`/produse/${p.slug}`} className="card" style={{ display: 'block' }}>
-                    <div className="card-img" style={{ padding: 0, overflow: 'hidden' }}>
+                  <div className="card-img" style={{ padding: 0, overflow: 'hidden' }}>
                     <img src={p.img} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
-                    </div>
-                    <div className="card-body">
+                  </div>
+                  <div className="card-body">
                     <div className="card-title">{p.title}</div>
                     <div className="card-desc">{p.desc}</div>
-                    </div>
+                  </div>
                 </Link>
-                </Reveal>
+              </Reveal>
             ))}
-            </div>
-            <Reveal style={{ textAlign: 'center', marginTop: 32 }}>
-            <Link to="/produse" style={{ fontSize: '0.83rem', color: '#e74c3c', fontWeight: 600 }}>Toate produsele →</Link>
-            </Reveal>
+          </div>
+          <Reveal style={{ textAlign: 'center', marginTop: 32 }}>
+            <Link to="/produse" style={{ fontSize: '0.83rem', color: '#e74c3c', fontWeight: 600 }}>{h.productsAll}</Link>
+          </Reveal>
         </div>
-        </section>
+      </section>
 
-      {/* ════════════ OFFERS ════════════ */}
+      {/* OFFERS */}
       <section className="section" style={{ background: '#080910' }}>
         <div className="container">
           <Reveal className="scroll-hidden-left">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 40, flexWrap: 'wrap', gap: 16 }}>
               <div>
-                <div className="section-eyebrow">Selecție curentă</div>
-                <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em' }}>Cele mai bune oferte</h2>
+                <div className="section-eyebrow">{h.offersEyebrow}</div>
+                <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em' }}>{h.offersTitle}</h2>
               </div>
-              <Link to="/produse" style={{ fontSize: '0.82rem', color: '#e74c3c', fontWeight: 600, whiteSpace: 'nowrap' }}>Toate ofertele →</Link>
+              <Link to="/produse" style={{ fontSize: '0.82rem', color: '#e74c3c', fontWeight: 600, whiteSpace: 'nowrap' }}>{h.offersAll}</Link>
             </div>
           </Reveal>
-
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px,1fr))', gap: 10 }}>
             {FEATURED.map((f, i) => (
               <Reveal key={i} delay={i * 0.07} className="scroll-hidden">
@@ -302,7 +279,7 @@ export default function Home() {
                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.transform = 'translateX(0)'; }}
                 >
                   <div style={{ width: 52, height: 52, minWidth: 52, borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
-                    <img src={f.img} alt={f.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
+                    <img src={f.img} alt={f.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   </div>
                   <span style={{ fontSize: '0.86rem', fontWeight: 500, color: 'rgba(255,255,255,0.7)', flex: 1, lineHeight: 1.4 }}>{f.title}</span>
                   <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.8rem', flexShrink: 0 }}>→</span>
@@ -315,36 +292,29 @@ export default function Home() {
 
       <div className="divider" />
 
-      {/* ════════════ ABOUT ════════════ */}
+      {/* ABOUT */}
       <section className="section">
         <div className="container">
           <div style={{ background: 'linear-gradient(135deg, #0f1019 0%, #0c0d16 100%)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 24, padding: '64px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, right: 0, width: 300, height: 300, background: 'radial-gradient(circle at top right, rgba(231,76,60,0.08), transparent 65%)', pointerEvents: 'none' }} />
-
             <Reveal className="scroll-hidden-left" style={{ position: 'relative', zIndex: 1 }}>
-              <div className="section-eyebrow">Despre noi</div>
+              <div className="section-eyebrow">{h.aboutEyebrow}</div>
               <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#fff', lineHeight: 1.15, letterSpacing: '-0.03em', marginBottom: 20 }}>
-                Unul dintre cei mai mari producători locali{' '}
-                <em style={{ fontStyle: 'italic', color: '#e74c3c' }}>de ambalaje</em>
+                {h.aboutTitle1}{' '}<em style={{ fontStyle: 'italic', color: '#e74c3c' }}>{h.aboutTitle2}</em>
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.32)', lineHeight: 1.9, marginBottom: 16, fontSize: '0.92rem' }}>
-                Cu peste 20 de ani de experiență, producem în două fabrici proprii mii de tipuri de pungi, filme și ambalaje flexibile pentru sectorul alimentar și industrial.
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.32)', lineHeight: 1.9, marginBottom: 36, fontSize: '0.92rem' }}>
-                Exportăm întreaga gamă în Grecia, Germania, Spania, Franța și Polonia.
-              </p>
-              <Link to="/despre" className="btn btn-outline" style={{ borderRadius: 99 }}>Aflați mai multe</Link>
+              <p style={{ color: 'rgba(255,255,255,0.32)', lineHeight: 1.9, marginBottom: 16, fontSize: '0.92rem' }}>{h.aboutDesc1}</p>
+              <p style={{ color: 'rgba(255,255,255,0.32)', lineHeight: 1.9, marginBottom: 36, fontSize: '0.92rem' }}>{h.aboutDesc2}</p>
+              <Link to="/despre" className="btn btn-outline" style={{ borderRadius: 99 }}>{h.aboutBtn}</Link>
             </Reveal>
-
             <Reveal className="scroll-hidden-right" style={{ position: 'relative', zIndex: 1 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 {[
-                  { icon: Icons.factory, label: '2 fabrici proprii', sub: 'Producție internă' },
-                  { icon: Icons.box, label: '~20 grupe produse', sub: 'Gamă completă' },
-                  { icon: Icons.globe, label: '6 piețe europene', sub: 'Export activ' },
-                  { icon: Icons.meat, label: 'Sector alimentar', sub: 'Focus principal' },
-                  { icon: Icons.car, label: 'Industrie auto', sub: 'Sector industrial' },
-                  { icon: Icons.check, label: 'Calitate ISO', sub: 'Certificări int.' },
+                  { icon: Icons.factory, label: h.aboutCard1, sub: h.aboutCard1sub },
+                  { icon: Icons.box,     label: h.aboutCard2, sub: h.aboutCard2sub },
+                  { icon: Icons.globe,   label: h.aboutCard3, sub: h.aboutCard3sub },
+                  { icon: Icons.meat,    label: h.aboutCard4, sub: h.aboutCard4sub },
+                  { icon: Icons.car,     label: h.aboutCard5, sub: h.aboutCard5sub },
+                  { icon: Icons.check,   label: h.aboutCard6, sub: h.aboutCard6sub },
                 ].map((item, i) => (
                   <div key={i} style={{ padding: '16px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, transition: 'border-color 0.18s' }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(231,76,60,0.25)'}
@@ -361,29 +331,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ════════════ NEWSLETTER ════════════ */}
+      {/* NEWSLETTER */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: '#080910' }}>
         <section className="section">
           <div className="container">
             <Reveal className="scroll-hidden-scale">
               <div style={{ textAlign: 'center', maxWidth: 560, margin: '0 auto' }}>
-                <div className="section-eyebrow" style={{ justifyContent: 'center' }}>Newsletter</div>
-                <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em', marginBottom: 14 }}>
-                  Nu ratați nicio ofertă
-                </h2>
-                <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: '0.9rem', marginBottom: 32, lineHeight: 1.75 }}>
-                  Informații despre produse noi și oferte speciale direct în inbox-ul dumneavoastră.
-                </p>
+                <div className="section-eyebrow" style={{ justifyContent: 'center' }}>{h.newsletterEyebrow}</div>
+                <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em', marginBottom: 14 }}>{h.newsletterTitle}</h2>
+                <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: '0.9rem', marginBottom: 32, lineHeight: 1.75 }}>{h.newsletterDesc}</p>
                 <div style={{ display: 'flex', gap: 10, maxWidth: 460, margin: '0 auto' }}>
-                  <input type="email" placeholder="Adresa de email" className="input" style={{ flex: 1 }} />
-                  <button className="btn btn-red" style={{ flexShrink: 0, borderRadius: 99, padding: '13px 24px' }}>Abonare</button>
+                  <input type="email" placeholder={h.newsletterPlaceholder} className="input" style={{ flex: 1 }} />
+                  <button className="btn btn-red" style={{ flexShrink: 0, borderRadius: 99, padding: '13px 24px' }}>{h.newsletterBtn}</button>
                 </div>
               </div>
             </Reveal>
           </div>
         </section>
       </div>
-
     </div>
   );
 }
