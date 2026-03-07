@@ -10,7 +10,18 @@ function Reveal({ children, className = 'scroll-hidden', style = {}, delay = 0 }
   return <div ref={ref} className={className} style={{ ...style, transitionDelay: `${delay}s` }}>{children}</div>;
 }
 
+function useIsMobile(bp = 640) {
+  const [v, setV] = useState(() => window.innerWidth <= bp);
+  useEffect(() => {
+    const h = () => setV(window.innerWidth <= bp);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, [bp]);
+  return v;
+}
+
 function Modal({ item, onClose, ti }) {
+  const isMobile = useIsMobile();
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -20,39 +31,39 @@ function Modal({ item, onClose, ti }) {
 
   if (!item) return null;
   return (
-    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', animation: 'fadeIn 0.2s ease' }}>
-      <div onClick={e => e.stopPropagation()} className="modal-inner" style={{ background: 'linear-gradient(145deg, #13141f, #0f1019)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 24, width: '100%', maxWidth: 680, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.8)', animation: 'fadeSlideUp 0.3s cubic-bezier(0.4,0,0.2,1)', position: 'relative' }}>
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: isMobile ? 'flex-end' : 'center', justifyContent: 'center', padding: isMobile ? '0' : '24px', animation: 'fadeIn 0.2s ease' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: 'linear-gradient(145deg, #13141f, #0f1019)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: isMobile ? '20px 20px 0 0' : 24, width: '100%', maxWidth: isMobile ? '100%' : 680, maxHeight: isMobile ? '92vh' : 'auto', overflowY: 'auto', boxShadow: '0 40px 100px rgba(0,0,0,0.8)', animation: 'fadeSlideUp 0.3s cubic-bezier(0.4,0,0.2,1)', position: 'relative' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, width: 36, height: 36, borderRadius: '50%', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.18s' }}
           onMouseEnter={e => { e.currentTarget.style.background = 'rgba(231,76,60,0.2)'; e.currentTarget.style.color = '#e74c3c'; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}>✕</button>
-        <div style={{ position: 'relative', height: 260, overflow: 'hidden' }}>
+        <div style={{ position: 'relative', height: isMobile ? 200 : 260, overflow: 'hidden' }}>
           <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #13141f 0%, transparent 60%)' }} />
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(231,76,60,0.4), transparent)' }} />
         </div>
-        <div style={{ padding: '32px 36px 36px' }}>
+        <div style={{ padding: isMobile ? '20px 18px 28px' : '32px 36px 36px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.2)', borderRadius: 99, marginBottom: 16 }}>
             <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#e74c3c', display: 'inline-block' }} />
             <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#e74c3c' }}>{ti.available}</span>
           </div>
-          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, color: '#fff', letterSpacing: '-0.03em', marginBottom: 14, lineHeight: 1.2 }}>{item.title}</h2>
-          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.92rem', lineHeight: 1.85, marginBottom: 28 }}>{item.desc}</p>
-          <div className="modal-specs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 28 }}>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', fontSize: 'clamp(1.3rem, 3vw, 2rem)', fontWeight: 400, color: '#fff', letterSpacing: '-0.03em', marginBottom: 12, lineHeight: 1.2 }}>{item.title}</h2>
+          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: 20 }}>{item.desc}</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 20 }}>
             {[
               { label: ti.specAvail,    value: ti.specAvailVal },
               { label: ti.specDelivery, value: ti.specDeliveryVal },
               { label: ti.specMin,      value: ti.specMinVal },
               { label: ti.specCustom,   value: ti.specCustomVal },
             ].map((spec, i) => (
-              <div key={i} style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10 }}>
-                <div style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>{spec.label}</div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)' }}>{spec.value}</div>
+              <div key={i} style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10 }}>
+                <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 3 }}>{spec.label}</div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)' }}>{spec.value}</div>
               </div>
             ))}
           </div>
-          <div className="modal-btns btn-row" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Link to="/despre#contact" onClick={onClose} className="btn btn-red" style={{ flex: 1, justifyContent: 'center', borderRadius: 99 }}>{ti.requestBtn}</Link>
-            <button onClick={onClose} className="btn btn-outline" style={{ borderRadius: 99, padding: '13px 24px' }}>{ti.closeBtn}</button>
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 10 }}>
+            <Link to="/despre#contact" onClick={onClose} className="btn btn-red" style={{ flex: isMobile ? 'none' : 1, width: isMobile ? '100%' : 'auto', justifyContent: 'center', borderRadius: 99 }}>{ti.requestBtn}</Link>
+            <button onClick={onClose} className="btn btn-outline" style={{ borderRadius: 99, padding: '13px 24px', width: isMobile ? '100%' : 'auto', justifyContent: 'center' }}>{ti.closeBtn}</button>
           </div>
         </div>
       </div>
