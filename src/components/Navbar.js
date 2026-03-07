@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import { useLang } from '../context/LanguageContext';
@@ -29,6 +29,16 @@ export default function Navbar() {
   const location = useLocation();
   const { t } = useLang();
 
+  useEffect(() => {
+    setMenuOpen(false);
+    setMobileExpanded(null);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   const isActive = (path) => location.pathname.startsWith(path);
   const toggle = (key) => setMobileExpanded(mobileExpanded === key ? null : key);
 
@@ -54,7 +64,6 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="container">
         <div className="navbar-inner">
-
           <Link to="/" className="navbar-logo">
             <img src="/images/logo.svg" alt="Vertrag Plus" style={{ height: 36 }} />
           </Link>
@@ -87,43 +96,90 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className={`hamburger ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            className={`hamburger ${menuOpen ? 'open' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
             <span /><span /><span />
-          </div>
+          </button>
         </div>
       </div>
 
-      {/* Mobile */}
-      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <div className="mobile-nav-group">
-          {[
-            { key: 'produse', label: t.nav.produse, items: PRODUSE_SLUGS, link: '/produse' },
-            { key: 'industrii', label: t.nav.industrii, items: INDUSTRII_SLUGS, link: '/industrii' },
-          ].map(({ key, label, items, link }) => (
-            <div key={key}>
-              <div className="mobile-nav-link" onClick={() => toggle(key)}>
-                {label} <span style={{ fontSize: '0.7rem', opacity: 0.4 }}>{mobileExpanded === key ? '▴' : '▾'}</span>
-              </div>
-              {mobileExpanded === key && (
-                <div className="mobile-sub">
-                  {items.map(i => (
-                    <Link key={i.slug} to={`${link}/${i.slug}`} className="mobile-sub-item" onClick={() => setMenuOpen(false)}>
-                      <span className="mobile-sub-label">{i.label}</span>
-                      <span className="mobile-sub-desc">{i.sub}</span>
+      {/* Mobile full-screen overlay */}
+      <div className={`mobile-overlay ${menuOpen ? 'open' : ''}`}>
+        <div className="mobile-overlay-inner">
+
+          <div className="mobile-overlay-header">
+            <Link to="/" className="navbar-logo" onClick={() => setMenuOpen(false)}>
+              <img src="/images/logo.svg" alt="Vertrag Plus" style={{ height: 32 }} />
+            </Link>
+            <button className="mobile-close" onClick={() => setMenuOpen(false)}>✕</button>
+          </div>
+
+          <div className="mobile-nav-items">
+
+            <div className="mobile-accordion">
+              <button className="mobile-accordion-trigger" onClick={() => toggle('produse')}>
+                <span>{t.nav.produse}</span>
+                <span className={`mobile-accordion-arrow ${mobileExpanded === 'produse' ? 'open' : ''}`}>›</span>
+              </button>
+              {mobileExpanded === 'produse' && (
+                <div className="mobile-accordion-body">
+                  {PRODUSE_SLUGS.map(item => (
+                    <Link key={item.slug} to={`/produse/${item.slug}`} className="mobile-sub-link" onClick={() => setMenuOpen(false)}>
+                      <span className="mobile-sub-link-label">{item.label}</span>
+                      <span className="mobile-sub-link-sub">{item.sub}</span>
                     </Link>
                   ))}
+                  <Link to="/produse" className="mobile-see-all" onClick={() => setMenuOpen(false)}>
+                    {t.nav.toateProdusele} →
+                  </Link>
                 </div>
               )}
             </div>
-          ))}
-          <Link to="/despre" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>{t.nav.despre}</Link>
+
+            <div className="mobile-accordion">
+              <button className="mobile-accordion-trigger" onClick={() => toggle('industrii')}>
+                <span>{t.nav.industrii}</span>
+                <span className={`mobile-accordion-arrow ${mobileExpanded === 'industrii' ? 'open' : ''}`}>›</span>
+              </button>
+              {mobileExpanded === 'industrii' && (
+                <div className="mobile-accordion-body">
+                  {INDUSTRII_SLUGS.map(item => (
+                    <Link key={item.slug} to={`/industrii/${item.slug}`} className="mobile-sub-link" onClick={() => setMenuOpen(false)}>
+                      <span className="mobile-sub-link-label">{item.label}</span>
+                      <span className="mobile-sub-link-sub">{item.sub}</span>
+                    </Link>
+                  ))}
+                  <Link to="/industrii" className="mobile-see-all" onClick={() => setMenuOpen(false)}>
+                    {t.nav.toateIndustriile} →
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <Link to="/despre" className="mobile-main-link" onClick={() => setMenuOpen(false)}>
+              {t.nav.despre}
+            </Link>
+
+          </div>
+
+          <div className="mobile-overlay-footer">
+            <div style={{ marginBottom: 16 }}>
+              <LanguageSwitcher />
+            </div>
+            <Link
+              to="/despre#contact"
+              className="btn btn-red"
+              style={{ width: '100%', justifyContent: 'center', borderRadius: 99, fontSize: '0.95rem', padding: '15px 24px' }}
+              onClick={() => setMenuOpen(false)}
+            >
+              {t.nav.contact} ›
+            </Link>
+          </div>
+
         </div>
-        <div style={{ padding: '4px 12px 8px' }}>
-          <LanguageSwitcher />
-        </div>
-        <Link to="/despre#contact" className="mobile-cta" onClick={() => setMenuOpen(false)}>
-          {t.nav.contact} <span style={{ color: '#e74c3c' }}>›</span>
-        </Link>
       </div>
     </nav>
   );
