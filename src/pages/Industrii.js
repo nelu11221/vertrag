@@ -205,7 +205,6 @@ const ALL = [
   },
 ];
 
-const FILTER_VALUES = ['Alimentar', 'HoReCa', 'Industrial'];
 
 export default function Industrii() {
   const { slug } = useParams();
