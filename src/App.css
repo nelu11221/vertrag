@@ -365,6 +365,127 @@ input, textarea, button { font-family: inherit; }
   transform: scale(1);
 }
 
+/* ── Mobile Responsive Additions ── */
+@media (max-width: 768px) {
+  /* Hero floating cards — hide on mobile */
+  .hero-float-left,
+  .hero-float-right { display: none !important; }
+
+  /* Hero section */
+  .hero-section {
+    padding: 100px 20px 60px !important;
+    min-height: auto !important;
+  }
+
+  /* Stats bar — 2x2 grid on mobile */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .stats-grid > div {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .stats-grid > div:nth-child(odd) {
+    border-right: 1px solid rgba(255,255,255,0.05) !important;
+  }
+  .stats-grid > div:last-child,
+  .stats-grid > div:nth-last-child(2):nth-child(odd) {
+    border-bottom: none;
+  }
+
+  /* About section — single column */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+    padding: 36px 24px !important;
+  }
+
+  /* Newsletter — stack input and button */
+  .newsletter-row {
+    flex-direction: column !important;
+  }
+
+  /* Page hero headers on Produse/Industrii — stack to single col */
+  .page-header-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .page-header-stats {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .page-header-image {
+    height: 220px !important;
+  }
+
+  /* TopProduse — 2 col on tablet, 1 col on small */
+  .top-produse-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* Despre — stack about grid */
+  .despre-about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+  .despre-contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .despre-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .despre-stats-grid > div {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .despre-stats-grid > div:nth-child(odd) {
+    border-right: 1px solid rgba(255,255,255,0.06) !important;
+  }
+
+  /* CTA banner — stack */
+  .cta-banner {
+    flex-direction: column !important;
+    padding: 36px 24px !important;
+    text-align: center;
+  }
+  .cta-banner-btns {
+    justify-content: center !important;
+  }
+
+  /* Modal — full screen friendly */
+  .modal-inner {
+    border-radius: 16px !important;
+  }
+  .modal-specs {
+    grid-template-columns: 1fr !important;
+  }
+  .modal-btns {
+    flex-direction: column !important;
+  }
+  .modal-btns .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 520px) {
+  /* TopProduse — single column on very small screens */
+  .top-produse-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* About card grid — single col */
+  .about-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Page header — reduce padding */
+  .page-header-inner {
+    padding: 56px 16px 40px !important;
+  }
+}
+
 /* staggered children */
 .scroll-stagger > *:nth-child(1) { transition-delay: 0s; }
 .scroll-stagger > *:nth-child(2) { transition-delay: 0.08s; }

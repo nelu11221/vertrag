@@ -28,7 +28,7 @@ export default function TopProduse() {
           <div style={{ width: 48, height: 2, background: 'linear-gradient(90deg, #e74c3c, rgba(231,76,60,0.2))', borderRadius: 2, margin: '20px auto 0' }} />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+        <div className="top-produse-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
           {FEATURED.map((f, i) => (
             <Link to={`/produse/${f.slug}`} key={i} style={{ textDecoration: 'none', color: 'inherit' }}>
               <div style={{ cursor: 'pointer' }}

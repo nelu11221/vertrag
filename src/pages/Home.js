@@ -165,13 +165,13 @@ export default function Home() {
   return (
     <div>
       {/* HERO */}
-      <section style={{ position: 'relative', minHeight: '94vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', overflow: 'hidden', padding: '120px 32px 80px' }}>
+      <section className="hero-section" style={{ position: 'relative', minHeight: '94vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', overflow: 'hidden', padding: '120px 32px 80px' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 30%, rgba(231,76,60,0.1) 0%, rgba(100,40,120,0.06) 35%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(8,9,16,1), transparent)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.025, backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
 
         {/* LEFT floating cards */}
-        <div style={{ position: 'absolute', left: '8%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.3s both' }}>
+        <div className="hero-float-left" style={{ position: 'absolute', left: '8%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.3s both' }}>
           <div style={{ position: 'absolute', top: 0, left: 20 }}><MockupCard icon={Icons.bag} label={h.floatCard1} sub={h.floatCard1sub} tag={h.floatTagTop} animDelay={0} style={{ transform: 'rotate(-6deg)' }} /></div>
           <div style={{ position: 'absolute', top: 185, left: 60 }}><StatChip value="2,000+" label={h.floatStat} animDelay={1.2} style={{ transform: 'rotate(4deg)' }} /></div>
           <div style={{ position: 'absolute', top: 330, left: 10 }}><MockupCard icon={Icons.film} label={h.floatCard2} sub={h.floatCard2sub} animDelay={0.7} style={{ transform: 'rotate(-2deg)', opacity: 0.88 }} /></div>
@@ -179,7 +179,7 @@ export default function Home() {
         </div>
 
         {/* RIGHT floating cards */}
-        <div style={{ position: 'absolute', right: '8%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.5s both' }}>
+        <div className="hero-float-right" style={{ position: 'absolute', right: '8%', top: '50%', transform: 'translateY(-50%)', width: 260, height: 620, pointerEvents: 'none', animation: 'fadeIn 1s ease 0.5s both' }}>
           <div style={{ position: 'absolute', top: 0, right: 0 }}><MockupCard icon={Icons.globe} label={h.floatCard3} sub={h.floatCard3sub} tag={h.floatTagInt} animDelay={0.5} style={{ transform: 'rotate(5deg)' }} /></div>
           <div style={{ position: 'absolute', top: 175, right: 50 }}><IndustryTag icon={Icons.cheese} label={h.floatTag2} animDelay={0.9} style={{ transform: 'rotate(-4deg)' }} /></div>
           <div style={{ position: 'absolute', top: 235, right: 0 }}><MockupCard icon={Icons.box} label={h.floatCard4} sub={h.floatCard4sub} animDelay={1.3} style={{ transform: 'rotate(-5deg)', opacity: 0.88 }} /></div>
@@ -217,7 +217,7 @@ export default function Home() {
       {/* STATS */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', background: '#0a0b14' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
+          <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
             {STATS.map((s, i) => (
               <Reveal key={i} delay={i * 0.1}>
                 <div style={{ padding: '40px 24px', textAlign: 'center', borderRight: i < STATS.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
@@ -295,7 +295,7 @@ export default function Home() {
       {/* ABOUT */}
       <section className="section">
         <div className="container">
-          <div style={{ background: 'linear-gradient(135deg, #0f1019 0%, #0c0d16 100%)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 24, padding: '64px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div className="about-grid" style={{ background: 'linear-gradient(135deg, #0f1019 0%, #0c0d16 100%)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 24, padding: '64px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, right: 0, width: 300, height: 300, background: 'radial-gradient(circle at top right, rgba(231,76,60,0.08), transparent 65%)', pointerEvents: 'none' }} />
             <Reveal className="scroll-hidden-left" style={{ position: 'relative', zIndex: 1 }}>
               <div className="section-eyebrow">{h.aboutEyebrow}</div>
@@ -307,7 +307,7 @@ export default function Home() {
               <Link to="/despre" className="btn btn-outline" style={{ borderRadius: 99 }}>{h.aboutBtn}</Link>
             </Reveal>
             <Reveal className="scroll-hidden-right" style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div className="about-cards-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 {[
                   { icon: Icons.factory, label: h.aboutCard1, sub: h.aboutCard1sub },
                   { icon: Icons.box,     label: h.aboutCard2, sub: h.aboutCard2sub },
@@ -340,7 +340,7 @@ export default function Home() {
                 <div className="section-eyebrow" style={{ justifyContent: 'center' }}>{h.newsletterEyebrow}</div>
                 <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em', marginBottom: 14 }}>{h.newsletterTitle}</h2>
                 <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: '0.9rem', marginBottom: 32, lineHeight: 1.75 }}>{h.newsletterDesc}</p>
-                <div style={{ display: 'flex', gap: 10, maxWidth: 460, margin: '0 auto' }}>
+                <div className="newsletter-row" style={{ display: 'flex', gap: 10, maxWidth: 460, margin: '0 auto' }}>
                   <input type="email" placeholder={h.newsletterPlaceholder} className="input" style={{ flex: 1 }} />
                   <button className="btn btn-red" style={{ flexShrink: 0, borderRadius: 99, padding: '13px 24px' }}>{h.newsletterBtn}</button>
                 </div>

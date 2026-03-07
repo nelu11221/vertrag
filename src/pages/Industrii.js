@@ -21,7 +21,7 @@ function Modal({ item, onClose, ti }) {
   if (!item) return null;
   return (
     <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', animation: 'fadeIn 0.2s ease' }}>
-      <div onClick={e => e.stopPropagation()} style={{ background: 'linear-gradient(145deg, #13141f, #0f1019)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 24, width: '100%', maxWidth: 680, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.8)', animation: 'fadeSlideUp 0.3s cubic-bezier(0.4,0,0.2,1)', position: 'relative' }}>
+      <div onClick={e => e.stopPropagation()} className="modal-inner" style={{ background: 'linear-gradient(145deg, #13141f, #0f1019)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 24, width: '100%', maxWidth: 680, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.8)', animation: 'fadeSlideUp 0.3s cubic-bezier(0.4,0,0.2,1)', position: 'relative' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, width: 36, height: 36, borderRadius: '50%', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.18s' }}
           onMouseEnter={e => { e.currentTarget.style.background = 'rgba(231,76,60,0.2)'; e.currentTarget.style.color = '#e74c3c'; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}>✕</button>
@@ -37,7 +37,7 @@ function Modal({ item, onClose, ti }) {
           </div>
           <h2 style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, color: '#fff', letterSpacing: '-0.03em', marginBottom: 14, lineHeight: 1.2 }}>{item.title}</h2>
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.92rem', lineHeight: 1.85, marginBottom: 28 }}>{item.desc}</p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 28 }}>
+          <div className="modal-specs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 28 }}>
             {[
               { label: ti.specAvail,    value: ti.specAvailVal },
               { label: ti.specDelivery, value: ti.specDeliveryVal },
@@ -50,7 +50,7 @@ function Modal({ item, onClose, ti }) {
               </div>
             ))}
           </div>
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div className="modal-btns" style={{ display: 'flex', gap: 10 }}>
             <Link to="/despre#contact" onClick={onClose} className="btn btn-red" style={{ flex: 1, justifyContent: 'center', borderRadius: 99 }}>{ti.requestBtn}</Link>
             <button onClick={onClose} className="btn btn-outline" style={{ borderRadius: 99, padding: '13px 24px' }}>{ti.closeBtn}</button>
           </div>
@@ -205,6 +205,7 @@ const ALL = [
   },
 ];
 
+const FILTER_VALUES = ['Alimentar', 'HoReCa', 'Industrial'];
 
 export default function Industrii() {
   const { slug } = useParams();
@@ -231,13 +232,13 @@ export default function Industrii() {
           <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${item.img})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.07, filter: 'blur(3px)' }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(8,9,20,0.97) 40%, rgba(231,76,60,0.05) 100%)' }} />
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(231,76,60,0.5), transparent)' }} />
-          <div className="container" style={{ position: 'relative', zIndex: 1, padding: '80px 32px 64px' }}>
+          <div className="container page-header-inner" style={{ position: 'relative', zIndex: 1, padding: '80px 32px 64px' }}>
             <div className="breadcrumb">
               <Link to="/">{ti.breadHome}</Link><span className="sep">/</span>
               <Link to="/industrii">{t.nav.industrii}</Link><span className="sep">/</span>
               <span className="current">{item.title}</span>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', marginTop: 8 }}>
+            <div className="page-header-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', marginTop: 8 }}>
               <div>
                 {item.tag && (
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '5px 14px', background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.25)', borderRadius: 99, marginBottom: 20 }}>
@@ -247,12 +248,12 @@ export default function Industrii() {
                 )}
                 <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(2.4rem, 5vw, 4rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1.08, marginBottom: 20 }}>{item.title}</h1>
                 <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '1rem', lineHeight: 1.8, maxWidth: 420, marginBottom: 36 }}>{item.desc}</p>
-                <div style={{ display: 'flex', gap: 10 }}>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                   <Link to="/despre#contact" className="btn btn-red" style={{ borderRadius: 99 }}>{ti.requestBtn}</Link>
                   <Link to="/industrii" className="btn btn-outline" style={{ borderRadius: 99 }}>{ti.backBtn}</Link>
                 </div>
               </div>
-              <div style={{ position: 'relative', height: 320, borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="page-header-image" style={{ position: 'relative', height: 320, borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,9,20,0.6) 0%, transparent 60%)' }} />
               </div>
@@ -323,24 +324,24 @@ export default function Industrii() {
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url(/images/ind1.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.08, filter: 'blur(2px)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(8,9,20,0.97) 40%, rgba(231,76,60,0.06) 100%)' }} />
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(231,76,60,0.5), transparent)' }} />
-        <div className="container" style={{ position: 'relative', zIndex: 1, padding: '80px 32px 64px' }}>
+        <div className="container page-header-inner" style={{ position: 'relative', zIndex: 1, padding: '80px 32px 64px' }}>
           <div className="breadcrumb">
             <Link to="/">{ti.breadHome}</Link><span className="sep">/</span>
             <span className="current">{t.nav.industrii}</span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+          <div className="page-header-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
             <div>
               <div className="section-eyebrow">{ti.eyebrow}</div>
               <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(2.4rem, 5vw, 4rem)', fontWeight: 400, fontStyle: 'italic', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1.08, marginBottom: 20 }}>
                 {ti.title1}<br /><span style={{ color: '#e74c3c' }}>{ti.title2}</span> {ti.title3}
               </h1>
               <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '1rem', lineHeight: 1.8, maxWidth: 420, marginBottom: 36 }}>{ti.desc}</p>
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <Link to="/despre#contact" className="btn btn-red" style={{ borderRadius: 99 }}>{ti.btn1}</Link>
                 <Link to="/produse" className="btn btn-outline" style={{ borderRadius: 99 }}>{ti.btn2}</Link>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div className="page-header-stats" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {STATS.map((s, i) => (
                 <div key={i} style={{ padding: '24px 20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, transition: 'border-color 0.2s' }}
                   onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(231,76,60,0.3)'}
@@ -400,7 +401,7 @@ export default function Industrii() {
         <section className="section" style={{ background: '#0a0b14' }}>
           <div className="container">
             <Reveal className="scroll-hidden-scale">
-              <div style={{ background: 'linear-gradient(135deg, #0f1019, #0c0d16)', border: '1px solid rgba(231,76,60,0.2)', borderRadius: 20, padding: '52px 60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 40, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
+              <div className="cta-banner" style={{ background: 'linear-gradient(135deg, #0f1019, #0c0d16)', border: '1px solid rgba(231,76,60,0.2)', borderRadius: 20, padding: '52px 60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 40, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(231,76,60,0.5), transparent)' }} />
                 <div style={{ position: 'absolute', bottom: '-40px', right: '-40px', width: 200, height: 200, background: 'radial-gradient(circle, rgba(231,76,60,0.08), transparent 70%)', pointerEvents: 'none' }} />
                 <div>
@@ -408,7 +409,7 @@ export default function Industrii() {
                   <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, color: '#fff', letterSpacing: '-0.03em', marginBottom: 8 }}>{ti.ctaTitle}</h2>
                   <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.88rem', maxWidth: 380, lineHeight: 1.7 }}>{ti.ctaDesc}</p>
                 </div>
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <div className="cta-banner-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   <Link to="/despre#contact" className="btn btn-red" style={{ borderRadius: 99 }}>{ti.ctaBtn1}</Link>
                   <Link to="/despre" className="btn btn-outline" style={{ borderRadius: 99 }}>{ti.ctaBtn2}</Link>
                 </div>

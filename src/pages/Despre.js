@@ -42,7 +42,7 @@ export default function Despre() {
       {/* Stats */}
       <div style={{ background: '#0e0e0e', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', padding: '40px 0', gap: 0 }}>
+          <div className="despre-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', padding: '40px 0', gap: 0 }}>
             {STATS.map((s, i) => (
               <div key={i} style={{ textAlign: 'center', padding: '12px 16px', borderRight: i < STATS.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
                 <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#e74c3c', letterSpacing: '-0.03em', marginBottom: 4 }}>{s.value}</div>
@@ -56,7 +56,7 @@ export default function Despre() {
       {/* About */}
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+          <div className="despre-about-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
             <div>
               <div className="section-eyebrow">{td.storyEyebrow}</div>
               <h2 className="section-title">{td.storyTitle}</h2>
@@ -129,7 +129,7 @@ export default function Despre() {
         <div className="container">
           <div className="section-eyebrow">{td.contactEyebrow}</div>
           <h2 className="section-title">{td.contactTitle}</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+          <div className="despre-contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
             <div>
               <p style={{ color: '#666', marginBottom: 32, lineHeight: 1.75, fontSize: '0.95rem' }}>{td.contactDesc}</p>
               {[
