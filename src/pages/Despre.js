@@ -113,13 +113,29 @@ export default function Despre() {
             </div>
             <div style={{ background: 'linear-gradient(145deg, #131313, #0f0f0f)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '36px', display: 'flex', flexDirection: 'column', gap: 16 }}>
               {[
-                { icon: '🏭', title: td.fact1, desc: td.fact1sub },
-                { icon: '📦', title: td.fact2, desc: td.fact2sub },
-                { icon: '🥩', title: td.fact3, desc: td.fact3sub },
-                { icon: '🚗', title: td.fact4, desc: td.fact4sub },
+                { icon: (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9" y1="14.5" x2="15" y2="14.5"/>
+                    </svg>
+                  ), title: td.fact1, desc: td.fact1sub },
+                { icon: (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                  ), title: td.fact2, desc: td.fact2sub },
+                { icon: (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/>
+                    </svg>
+                  ), title: td.fact3, desc: td.fact3sub },
+                { icon: (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+                    </svg>
+                  ), title: td.fact4, desc: td.fact4sub },
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10 }}>
-                  <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                  <span style={{ color: '#e74c3c', flexShrink: 0 }}>{item.icon}</span>
                   <div>
                     <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>{item.title}</div>
                     <div style={{ fontSize: '0.78rem', color: '#555' }}>{item.desc}</div>
