@@ -194,7 +194,7 @@ export default function Despre() {
           <h2 className="section-title">{td.contactTitle}</h2>
           <div style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.07)', marginBottom: 48, height: 320 }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1829.6100339772538!2d28.827864481454114!3d47.09220192934533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2s!4v1773434518094!5m2!1sru!2s"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2716.268135934453!2d28.827869775834827!3d47.093813923247936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40cbd800274bc14b%3A0x4a011dde1cc82541!2zU3RyYWRhIFByaWV0ZW5pZWkgMSwgTUQtMjA5MywgR3LEg3RpZciZdGksINCc0L7Qu9C00L7QstCw!5e0!3m2!1sru!2s!4v1773434883983!5m2!1sru!2s"
               width="100%"
               height="100%"
               style={{ border: 0, display: 'block', filter: 'grayscale(30%) invert(92%) hue-rotate(180deg) brightness(0.85) contrast(0.9)' }}
