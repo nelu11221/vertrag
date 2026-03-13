@@ -192,6 +192,18 @@ export default function Despre() {
         <div className="container">
           <div className="section-eyebrow">{td.contactEyebrow}</div>
           <h2 className="section-title">{td.contactTitle}</h2>
+          <div style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.07)', marginBottom: 48, height: 320 }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1829.6100339772538!2d28.827864481454114!3d47.09220192934533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2s!4v1773434518094!5m2!1sru!2s"
+              width="100%"
+              height="100%"
+              style={{ border: 0, display: 'block', filter: 'grayscale(30%) invert(92%) hue-rotate(180deg) brightness(0.85) contrast(0.9)' }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Vertrag Plus location"
+            />
+          </div>
           <div className="despre-contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
             <div>
               <p style={{ color: '#666', marginBottom: 32, lineHeight: 1.75, fontSize: '0.95rem' }}>{td.contactDesc}</p>
